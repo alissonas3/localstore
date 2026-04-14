@@ -19,19 +19,19 @@ describe('ProductList', () => {
     expect(screen.getByRole('alert')).toBeInTheDocument()
   })
 
-  test('renderiza apenas 5 produtos na primeira página', () => {
+  test('renderiza apenas 12 produtos na primeira página', () => {
     mockUseProducts.mockReturnValue({ data: mockProducts, isLoading: false, isError: false } as any)
     render(<ProductList />)
     expect(screen.getByText('Produto 1')).toBeInTheDocument()
-    expect(screen.getByText('Produto 5')).toBeInTheDocument()
-    expect(screen.queryByText('Produto 6')).not.toBeInTheDocument()
+    expect(screen.getByText('Produto 12')).toBeInTheDocument()
+    expect(screen.queryByText('Produto 13')).not.toBeInTheDocument()
   })
 
-  test('navegar para página 2 exibe os próximos 5 produtos', () => {
+  test('navegar para página 2 exibe os próximos produtos', () => {
     mockUseProducts.mockReturnValue({ data: mockProducts, isLoading: false, isError: false } as any)
     render(<ProductList />)
     fireEvent.click(screen.getByRole('button', { name: /page 2/i }))
-    expect(screen.getByText('Produto 6')).toBeInTheDocument()
+    expect(screen.getByText('Produto 13')).toBeInTheDocument()
     expect(screen.queryByText('Produto 1')).not.toBeInTheDocument()
   })
 })

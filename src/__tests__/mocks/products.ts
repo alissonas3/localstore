@@ -1,6 +1,6 @@
 import type { IProduct } from '@/types/product'
 
-export const mockProducts: IProduct[] = Array.from({ length: 10 }, (_, i) => ({
+export const mockProducts: IProduct[] = Array.from({ length: 20 }, (_, i) => ({
   id: i + 1,
   title: `Produto ${i + 1}`,
   price: 10 + i,

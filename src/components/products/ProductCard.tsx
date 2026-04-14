@@ -11,19 +11,29 @@ import type { IProduct } from '@/types/product'
 
 export function ProductCard({ product }: { product: IProduct }) {
   return (
-    <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+    <Card
+      sx={{
+        height: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        border: '1px solid',
+        borderColor: 'grey.200',
+        boxShadow: 'none',
+        borderRadius: 2,
+      }}
+    >
       <CardMedia
         component="img"
-        height="200"
         image={product.image}
         alt={product.title}
-        sx={{ objectFit: 'contain', p: 2 }}
+        sx={{ height: 200, objectFit: 'contain', p: 3 }}
       />
-      <CardContent sx={{ flex: 1 }}>
+      <CardContent sx={{ flex: 1, pb: 1 }}>
         <Typography
-          variant="subtitle2"
+          variant="body2"
           gutterBottom
           sx={{
+            fontWeight: 500,
             overflow: 'hidden',
             textOverflow: 'ellipsis',
             display: '-webkit-box',
@@ -33,22 +43,20 @@ export function ProductCard({ product }: { product: IProduct }) {
         >
           {product.title}
         </Typography>
-        <Typography variant="h6" color="primary">
-          ${product.price.toFixed(2)}
-        </Typography>
         <Typography variant="caption" color="text.secondary">
-          {product.category}
+          {product.category} | ${product.price.toFixed(2)}
         </Typography>
       </CardContent>
-      <CardActions>
+      <CardActions sx={{ px: 2, pb: 2 }}>
         <Button
           component={Link}
           href={`/product/${product.id}`}
+          variant="outlined"
+          color="inherit"
           size="small"
-          variant="contained"
           fullWidth
         >
-          Ver detalhes
+          Ver mais
         </Button>
       </CardActions>
     </Card>

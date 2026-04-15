@@ -9,7 +9,7 @@ export function MainLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
       <Header />
-      <Box component="main" sx={{ flex: 1, py: 4 }}>
+      <Box component="main" sx={{ flex: 1, py: 4, bgcolor: 'grey.200' }}>
         <Container maxWidth="lg">{children}</Container>
       </Box>
       <Footer />

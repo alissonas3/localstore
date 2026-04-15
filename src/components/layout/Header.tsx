@@ -13,9 +13,9 @@ import { usePathname } from 'next/navigation'
 
 const NAV_LINKS = [
   { label: 'O Início', href: '/' },
-  { label: 'Produtos', href: '#' },
-  { label: 'Quem somos', href: '#' },
-  { label: 'Contato', href: '#' },
+  { label: 'Produtos', href: '/produtos' },
+  { label: 'Quem somos', href: '/quem-somos' },
+  { label: 'Contato', href: '/contato' },
 ]
 
 const PRIMARY = '#01602A'

@@ -55,6 +55,15 @@ export function ProductCard({ product }: { product: IProduct }) {
           color="inherit"
           size="small"
           fullWidth
+          sx={{
+            borderColor: 'primary.main',
+            textTransform: 'none',
+            fontWeight: 600,
+            '&:hover': {
+              backgroundColor: 'primary.main',
+              color: 'primary.contrastText',
+            },
+          }}
         >
           Ver mais
         </Button>

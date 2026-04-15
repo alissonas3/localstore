@@ -30,7 +30,7 @@ describe('ProductDetail', () => {
   test('renderiza preço formatado', () => {
     mockUseProduct.mockReturnValue({ data: product, isLoading: false, isError: false } as any)
     render(<ProductDetail id={1} />)
-    expect(screen.getByText(`$${product.price.toFixed(2)}`)).toBeInTheDocument()
+    expect(screen.getByText(`R$ ${product.price.toFixed(2)}`)).toBeInTheDocument()
   })
 
   test('renderiza categoria como chip', () => {

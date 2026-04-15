@@ -6,7 +6,7 @@ Aplicação de loja demonstrativa construída com Next.js 16, Material-UI v9 e R
 
 ## Funcionalidades
 
-- **Listagem de Produtos (PLP)** — grid responsivo com paginação client-side (5 itens/página)
+- **Listagem de Produtos (PLP)** — grid responsivo com paginação client-side (12 itens/página)
 - **Detalhes do Produto (PDP)** — layout em duas colunas com imagem, preço, categoria, descrição e botão de ação
 - **Header e Footer globais** — presentes em todas as rotas via `RootLayout`
 - **Estados de loading** — Skeletons MUI enquanto os dados são buscados
@@ -113,17 +113,27 @@ localstore/
 │   │   ├── ThemeRegistry.tsx         # MUI SSR (AppRouterCacheProvider)
 │   │   ├── Providers.tsx             # QueryClientProvider + DevTools
 │   │   ├── layout/
-│   │   │   ├── Header.tsx            # AppBar com logo e link para home
-│   │   │   ├── Footer.tsx            # Rodapé com copyright
+│   │   │   ├── Header.tsx            # AppBar — compõe Logo + NavigationLinks + HeaderActions
+│   │   │   ├── Logo.tsx              # Logotipo com link para home
+│   │   │   ├── NavigationLinks.tsx   # Links de navegação com estado ativo
+│   │   │   ├── HeaderActions.tsx     # Ícones de perfil e carrinho
+│   │   │   ├── Footer.tsx            # Rodapé — compõe logo + SocialLinks + copyright
+│   │   │   ├── SocialLinks.tsx       # Ícones de redes sociais configuráveis via props
 │   │   │   └── MainLayout.tsx        # Header + <main> + Footer
 │   │   └── products/
 │   │       ├── ProductCard.tsx       # Card de produto (UI puro)
-│   │       ├── ProductList.tsx       # Grid + paginação client-side
-│   │       └── ProductDetail.tsx     # Layout de detalhes do produto
+│   │       ├── ProductList.tsx       # Orquestra grid + paginação
+│   │       ├── ProductGrid.tsx       # Grid responsivo com skeletons de loading
+│   │       ├── ProductPagination.tsx # Componente de paginação isolado
+│   │       ├── ProductDetail.tsx     # Orquestra loading / erro / conteúdo
+│   │       ├── ProductDetailContent.tsx  # Renderização pura do detalhe do produto
+│   │       ├── ProductDetailSkeleton.tsx # Skeleton do layout de detalhe
+│   │       └── InfoItem.tsx          # Item de informação reutilizável (label + value)
 │   │
 │   ├── hooks/
 │   │   ├── useProducts.ts            # useQuery para lista de produtos
-│   │   └── useProduct.ts             # useQuery para produto por ID
+│   │   ├── useProduct.ts             # useQuery para produto por ID
+│   │   └── usePagination.ts          # Hook genérico de paginação client-side
 │   │
 │   ├── services/
 │   │   ├── apiClient.ts              # apiFetch<T> — cliente HTTP base
@@ -134,7 +144,10 @@ localstore/
 │   │
 │   └── lib/
 │       ├── queryClient.ts            # Singleton QueryClient (staleTime 60s)
-│       └── theme.ts                  # Tema MUI customizado
+│       ├── theme.ts                  # Tema MUI customizado
+│       ├── navigation.ts             # Configuração dos links de navegação (NavLink[])
+│       ├── productDisplay.ts         # Transformação de IProduct para exibição (buildProductInfoItems)
+│       └── social.ts                 # Configuração dos links de redes sociais (SocialLink[])
 │
 ├── src/__tests__/
 │   ├── mocks/
@@ -185,10 +198,10 @@ Server Component
 
 | Princípio | Onde |
 |---|---|
-| **Single Responsibility** | `apiClient` só faz HTTP; `productService` só conhece endpoints; cada hook encapsula uma query |
-| **Open/Closed** | `apiFetch<T>` é genérico — novos serviços (ex: `categoryService`) não modificam o cliente |
-| **Interface Segregation** | `IProduct` e `IProductRating` são contratos separados |
-| **Dependency Inversion** | Componentes dependem de hooks, não de services diretamente; services dependem de `apiFetch`, não de `fetch` concreto |
+| **Single Responsibility** | `apiClient` só faz HTTP; `productService` só conhece endpoints; cada hook encapsula uma query; `ProductList` apenas orquestra — grid e paginação vivem em componentes próprios |
+| **Open/Closed** | `apiFetch<T>` é genérico — novos serviços não modificam o cliente; `Header` e `Footer` são extensíveis via props (`navItems`, `socialLinks`) sem alterar o componente |
+| **Interface Segregation** | `IProduct` e `IProductRating` são contratos separados; props de cada componente são enxutas e específicas (`InfoItemProps`, `ProductPaginationProps`, `NavigationLinksProps`) |
+| **Dependency Inversion** | Componentes dependem de hooks, não de services diretamente; services dependem de `apiFetch`, não de `fetch` concreto; configurações de navegação e redes sociais são injetadas via props com defaults em `lib/` |
 
 ### React Query v5
 
@@ -263,4 +276,4 @@ GET https://fakestoreapi.com/products        → lista todos os produtos
 GET https://fakestoreapi.com/products/:id    → detalhes de um produto
 ```
 
-> **Observação sobre paginação:** a FakeStore API retorna no máximo 20 produtos e não suporta paginação real via query params. A paginação é implementada no cliente, dividindo o array em páginas de 5 itens com `.slice()`.
+> **Observação sobre paginação:** a FakeStore API retorna no máximo 20 produtos e não suporta paginação real via query params. A paginação é implementada no cliente pelo hook `usePagination`, dividindo o array em páginas de 12 itens com `.slice()`.

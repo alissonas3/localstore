@@ -11,7 +11,7 @@ test('renderiza o título do produto', () => {
 
 test('renderiza o preço formatado', () => {
   render(<ProductCard product={product} />)
-  expect(screen.getByText(`$${product.price.toFixed(2)}`)).toBeInTheDocument()
+  expect(screen.getByText(`${product.category} | $${product.price.toFixed(2)}`)).toBeInTheDocument()
 })
 
 test('renderiza a imagem com alt correto', () => {
@@ -21,11 +21,11 @@ test('renderiza a imagem com alt correto', () => {
 
 test('renderiza a categoria', () => {
   render(<ProductCard product={product} />)
-  expect(screen.getByText(product.category)).toBeInTheDocument()
+  expect(screen.getByText(new RegExp(product.category, 'i'))).toBeInTheDocument()
 })
 
-test('link "Ver detalhes" aponta para a rota correta', () => {
+test('link "Ver mais" aponta para a rota correta', () => {
   render(<ProductCard product={product} />)
-  expect(screen.getByRole('link', { name: /ver detalhes/i }))
+  expect(screen.getByRole('link', { name: /ver mais/i }))
     .toHaveAttribute('href', `/product/${product.id}`)
 })

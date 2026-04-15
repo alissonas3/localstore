@@ -10,7 +10,7 @@ interface SocialLinksProps {
 export function SocialLinks({ links }: SocialLinksProps) {
   return (
     <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-      <Typography variant="body2" sx={{ color: 'grey.300', mr: 1 }}>
+      <Typography variant="body2" sx={{ color: 'grey.300', mr: 1, display: { xs: 'none', sm: 'block' } }}>
         Acompanhe nossas redes sociais:
       </Typography>
       {links.map(({ icon: Icon, href, label }) => (

@@ -20,7 +20,16 @@ export function Footer({ socialLinks = DEFAULT_SOCIAL_LINKS }: FooterProps) {
     >
       <Container maxWidth="lg">
 
-        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', py: 1 }}>
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: { xs: 'column', sm: 'row' },
+            alignItems: { xs: 'flex-start', sm: 'center' },
+            justifyContent: 'space-between',
+            gap: { xs: 1, sm: 0 },
+            py: 1,
+          }}
+        >
           <Typography
             variant="h6"
             sx={{ color: 'white', fontWeight: 700, letterSpacing: '-0.5px', lineHeight: 1 }}
